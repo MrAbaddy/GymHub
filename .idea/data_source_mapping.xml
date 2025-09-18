@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/gymhub/src/main/resources/db/migration/V1__initial-table.sql" value="a1f8ea84-5826-403f-9e9d-d756f8ed8271" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/a1f8ea84-5826-403f-9e9d-d756f8ed8271/console.sql" value="a1f8ea84-5826-403f-9e9d-d756f8ed8271" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/a1f8ea84-5826-403f-9e9d-d756f8ed8271/console_1.sql" value="a1f8ea84-5826-403f-9e9d-d756f8ed8271" />
+  </component>
+</project>

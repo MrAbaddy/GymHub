@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 @Repository
 
-public interface Alunorepository extends JpaRepository<Aluno, Long> {
+public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     public Aluno findAlunoByUuid(UUID uuid);
     public void deleteAlunoByUuid(UUID uuid);
