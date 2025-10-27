@@ -1,7 +1,5 @@
-package br.csi.gymhub.model.fichaexercicios;
+package br.csi.gymhub.model;
 
-import br.csi.gymhub.model.aluno.Aluno;
-import br.csi.gymhub.model.instrutor.Instrutor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -20,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Schema(description = "Ficha de exercícios do aluno")
-public class FichaExercicios {
+public class FichaExercicio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +38,14 @@ public class FichaExercicios {
 
     @NonNull
     @NotBlank(message = "Nome do exercício é obrigatório")
+    @Column(name = "nome_exercicio", nullable = false)
     private String nomeExercicio;
 
-    @Min(0)
+    @Min(value = 0, message = "Número de séries inválido")
+    @Column(name = "num_series")
     private Integer numSeries;
 
-    @Min(0)
+    @Min(value = 0, message = "Número de repetições inválido")
+    @Column(name = "num_repeticoes")
     private Integer numRepeticoes;
 }

@@ -1,6 +1,5 @@
-package br.csi.gymhub.model.fichafisica;
+package br.csi.gymhub.model;
 
-import br.csi.gymhub.model.aluno.Aluno;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -18,7 +17,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Schema(description = "Ficha física do aluno")
 public class FichaFisica {
 
@@ -29,7 +27,7 @@ public class FichaFisica {
     @UuidGenerator
     private UUID uuid;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "aluno_id", nullable = false)
     @NotNull(message = "Aluno é obrigatório")
     private Aluno aluno;

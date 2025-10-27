@@ -1,15 +1,12 @@
-package br.csi.gymhub.model.aluno;
+package br.csi.gymhub.model;
 
-import br.csi.gymhub.model.administrativo.Administrativo;
-import br.csi.gymhub.model.fichaexercicios.FichaExercicios;
-import br.csi.gymhub.model.fichafisica.FichaFisica;
-import br.csi.gymhub.model.instrutor.Instrutor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,7 +16,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Schema(description = "Entidade que representa um aluno da academia")
 public class Aluno {
 
@@ -47,16 +43,22 @@ public class Aluno {
     @Size(max = 20)
     private String telefone;
 
-    // Relacionamento NxN com Instrutor
     @ManyToMany(mappedBy = "alunos")
-    private Set<Instrutor> instrutores;
+    private Set<Instrutor> instrutores = new HashSet<>();
+
+    @OneToOne(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
+    private FichaFisica fichaFisica;
 
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<FichaFisica> fichasFisicas;
-
-    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<FichaExercicios> fichaExercicios;
+    private Set<FichaExercicio> fichaExercicios = new HashSet<>();
 
     @OneToOne(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     private Administrativo administrativo;
+
+    public void setFichaFisica(FichaFisica ficha) {
+        if (ficha != null) {
+            ficha.setAluno(this);
+        }
+        this.fichaFisica = ficha;
+    }
 }

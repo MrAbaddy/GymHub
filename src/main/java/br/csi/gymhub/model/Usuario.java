@@ -1,4 +1,4 @@
-package br.csi.gymhub.model.usuario;
+package br.csi.gymhub.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;

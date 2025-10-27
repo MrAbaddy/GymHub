@@ -1,12 +1,10 @@
-package br.csi.gymhub.model.administrativo;
+package br.csi.gymhub.model;
 
-import br.csi.gymhub.model.aluno.Aluno;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
-
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -14,14 +12,14 @@ import java.util.UUID;
 @Table(name = "administrativo")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor // construtor sem argumentos para JPA
+@AllArgsConstructor // construtor com todos os campos
 @Schema(description = "Controle administrativo do aluno")
 public class Administrativo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "ID do registro administrativo", example = "1")
     private Long id;
 
     @UuidGenerator

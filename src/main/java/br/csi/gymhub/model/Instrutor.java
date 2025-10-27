@@ -1,7 +1,5 @@
-package br.csi.gymhub.model.instrutor;
+package br.csi.gymhub.model;
 
-import br.csi.gymhub.model.aluno.Aluno;
-import br.csi.gymhub.model.fichaexercicios.FichaExercicios;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -48,5 +46,5 @@ public class Instrutor {
     private Set<Aluno> alunos;
 
     @OneToMany(mappedBy = "instrutor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<FichaExercicios> fichaExercicios;
+    private Set<FichaExercicio> fichaExercicios;
 }
