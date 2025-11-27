@@ -1,59 +1,30 @@
 package br.csi.gymhub.service;
 
-import br.csi.gymhub.dto.UsuarioDTO;
+import br.csi.gymhub.model.DadosUsuario;
 import br.csi.gymhub.model.Usuario;
 import br.csi.gymhub.repository.UsuarioRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UsuarioService {
-
     private final UsuarioRepository repository;
 
-    public UsuarioService(UsuarioRepository repository) {
-        this.repository = repository;
+    public DadosUsuario cadastrar(Usuario usuario) {
+        usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
+        return new DadosUsuario(repository.save(usuario));
     }
 
-    public UsuarioDTO criar(UsuarioDTO dto) {
-        Usuario usuario = new Usuario();
-        usuario.setNome(dto.nome());
-        usuario.setSenha(dto.senha());
-        return mapToDTO(repository.save(usuario));
+    public DadosUsuario findUsuario(Long id) {
+        Usuario usuario = repository.getReferenceById(id);
+        return new DadosUsuario(usuario);
     }
 
-    public List<UsuarioDTO> listar() {
-        return repository.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
-    }
-
-    public UsuarioDTO buscarPorId(Long id) {
-        return repository.findById(id).map(this::mapToDTO).orElse(null);
-    }
-
-    public UsuarioDTO atualizar(Long id, UsuarioDTO dto) {
-        return repository.findById(id).map(usuario -> {
-            usuario.setNome(dto.nome());
-            usuario.setSenha(dto.senha());
-            return mapToDTO(repository.save(usuario));
-        }).orElse(null);
-    }
-
-    public boolean deletar(Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
-    private UsuarioDTO mapToDTO(Usuario usuario) {
-        return new UsuarioDTO(
-                usuario.getId(),
-                usuario.getUuid(),
-                usuario.getNome(),
-                usuario.getSenha()
-        );
+    public List<DadosUsuario> findAllUsuarios() {
+        return repository.findAll().stream().map(DadosUsuario::new).toList();
     }
 }
