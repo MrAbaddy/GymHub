@@ -31,7 +31,6 @@ public class AutenticacaoFilter extends OncePerRequestFilter {
 
         if (token != null) {
             try {
-                // Tenta validar o token
                 String subject = this.tokenService.getSubject(token);
                 UserDetails user = this.autenticacaoService.loadUserByUsername(subject);
 
@@ -40,15 +39,10 @@ public class AutenticacaoFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception e) {
-                // SE O TOKEN FOR INVÁLIDO OU EXPIRADO:
-                // Ignora o erro e segue a vida. O usuário entra como "anônimo".
-                // Se a rota for /login, vai funcionar.
-                // Se for rota privada, o SecurityConfig vai barrar logo em seguida.
                 System.out.println("Token inválido ou expirado: " + e.getMessage());
             }
         }
 
-        // SEMPRE CHAMA O PRÓXIMO FILTRO
         filterChain.doFilter(request, response);
     }
 

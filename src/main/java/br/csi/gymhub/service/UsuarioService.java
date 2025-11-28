@@ -23,8 +23,28 @@ public class UsuarioService {
         return new DadosUsuario(repository.save(usuario));
     }
 
+    public DadosUsuario atualizar(Long id, Usuario dadosAtualizados) {
+        Usuario usuarioExistente = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        usuarioExistente.setNome(dadosAtualizados.getNome());
+        usuarioExistente.setLogin(dadosAtualizados.getLogin());
+        usuarioExistente.setPermissao(dadosAtualizados.getPermissao());
+
+        if (dadosAtualizados.getSenha() != null && !dadosAtualizados.getSenha().isEmpty()) {
+            usuarioExistente.setSenha(new BCryptPasswordEncoder().encode(dadosAtualizados.getSenha()));
+        }
+
+        return new DadosUsuario(repository.save(usuarioExistente));
+    }
+
+    public void deletar(Long id) {
+        repository.deleteById(id);
+    }
+
     public DadosUsuario findUsuario(Long id) {
-        Usuario usuario = repository.getReferenceById(id);
+        Usuario usuario = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         return new DadosUsuario(usuario);
     }
 

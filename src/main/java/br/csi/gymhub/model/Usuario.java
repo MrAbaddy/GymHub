@@ -2,7 +2,7 @@ package br.csi.gymhub.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank; // Recomendado trocar NotNull por NotBlank para Strings
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +15,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull @Email
+
+    @NotBlank
+    private String nome;
+
+    @NotBlank @Email
     private String login;
-    @NotNull
+
+    @NotBlank
     private String senha;
+
     private String permissao;
 }

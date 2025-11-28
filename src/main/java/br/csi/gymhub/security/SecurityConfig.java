@@ -33,8 +33,16 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Rotas de Autenticação (Login/Registro)
                         .requestMatchers(HttpMethod.POST, "/gymhub/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/gymhub/registrar").permitAll()
+
+                        // --- LIBERAÇÃO DO CRUD DE USUÁRIOS ---
+                        // Permite GET, POST, PUT, DELETE na rota da API usada pelo Dashboard
+                        .requestMatchers("/gymhub/usuario").permitAll()     // Listar e Criar
+                        .requestMatchers("/gymhub/usuario/**").permitAll()  // Editar e Deletar (por ID)
+
+                        // Configurações globais
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
