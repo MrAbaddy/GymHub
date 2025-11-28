@@ -26,25 +26,36 @@ public class AutenticacaoFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws IOException, ServletException {
+
         String token = recuperarToken(request);
 
         if (token != null) {
-            String subject = this.tokenService.getSubject(token);
+            try {
+                // Tenta validar o token
+                String subject = this.tokenService.getSubject(token);
+                UserDetails user = this.autenticacaoService.loadUserByUsername(subject);
 
-            UserDetails user = this.autenticacaoService.loadUserByUsername(subject);
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (Exception e) {
+                // SE O TOKEN FOR INVÁLIDO OU EXPIRADO:
+                // Ignora o erro e segue a vida. O usuário entra como "anônimo".
+                // Se a rota for /login, vai funcionar.
+                // Se for rota privada, o SecurityConfig vai barrar logo em seguida.
+                System.out.println("Token inválido ou expirado: " + e.getMessage());
+            }
         }
 
+        // SEMPRE CHAMA O PRÓXIMO FILTRO
         filterChain.doFilter(request, response);
     }
 
     private String recuperarToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
 
-        if (token == null) {
+        if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
             return null;
         }
 

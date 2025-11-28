@@ -6,7 +6,6 @@ import br.csi.gymhub.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -16,6 +15,11 @@ public class UsuarioService {
 
     public DadosUsuario cadastrar(Usuario usuario) {
         usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
+
+        if (usuario.getPermissao() == null || usuario.getPermissao().isEmpty()) {
+            usuario.setPermissao("ADMIN");
+        }
+
         return new DadosUsuario(repository.save(usuario));
     }
 
