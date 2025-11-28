@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/gymhub/usuario")
 @AllArgsConstructor
 public class UsuarioController {
     private final UsuarioService service;
